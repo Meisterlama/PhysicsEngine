@@ -1,3 +1,4 @@
+use std::time::Instant;
 use bevy::prelude::*;
 
 use rayon::prelude::*;
@@ -18,6 +19,8 @@ pub fn narrow_phase(
     mut system_data: ResMut<SystemData>,
     config: Res<CollisionConfig>)
 {
+    let start = Instant::now();
+
     if let Some(collision_infos) = &mut system_data.narrow_phase_collision_infos
     {
         collision_infos.clear();
@@ -27,6 +30,8 @@ pub fn narrow_phase(
         NarrowPhaseType::Disabled => None,
         NarrowPhaseType::Enabled => Some(narrow_phase_precise(&system_data, &query))
     };
+
+    system_data.narrow_time = Instant::now() - start;
 }
 
 fn narrow_phase_precise(entities_to_check: &SystemData,

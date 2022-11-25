@@ -33,7 +33,7 @@ fn startup_add_polygons(mut commands: Commands)
 {
     let config = RandomPolyConfig::default();
 
-    for _ in 0..100
+    for _ in 0..200
     {
         commands.spawn(random_poly::create_random_poly(&config));
     }

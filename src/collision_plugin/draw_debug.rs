@@ -44,7 +44,7 @@ pub fn draw_debug(
         while let Ok([(_e1, p1, t1, _a1), (_e2, p2, t2, _a2)]) = subquery_iter.next_chunk::<2>()
         {
             if config.draw_debug_narrow_phase {
-                lines.line_colored(t1.position.extend(0f32), t2.position.extend(0f32), 0f32, Color::RED);
+                lines.line_colored(t1.position.extend(0f32), t2.position.extend(0f32), 0f32, Color::PURPLE);
             }
 
             unsafe {

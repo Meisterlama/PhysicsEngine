@@ -72,7 +72,7 @@ fn select_polygons(
 }
 
 fn move_polygon(
-    mut q_polygons: Query<(Entity, &mut PolygonComponent, &mut Transform2d, &mut AABB, Option<&EntityToRotate>, Option<&EntityToMove>), Or<(With<EntityToRotate>, With<EntityToMove>)>>,
+    mut q_polygons: Query<(Entity, &mut PolygonComponent, &mut Transform2d, &AABB, Option<&EntityToRotate>, Option<&EntityToMove>), Or<(With<EntityToRotate>, With<EntityToMove>)>>,
     q_camera: Query<&OrthographicProjection, With<MainCamera>>,
     mut motion_evr: EventReader<MouseMotion>,
 )
@@ -88,7 +88,7 @@ fn move_polygon(
         tmp_delta
     };
 
-    for (_entity, polygon, mut transform, mut aabb, entity_to_rotate, entity_to_move) in q_polygons.iter_mut()
+    for (_entity, polygon, mut transform, aabb, entity_to_rotate, entity_to_move) in q_polygons.iter_mut()
     {
         if entity_to_move.is_some()
         {

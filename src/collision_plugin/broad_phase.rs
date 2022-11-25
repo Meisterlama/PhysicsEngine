@@ -1,3 +1,4 @@
+use std::time::Instant;
 use bevy::prelude::*;
 use rayon::prelude::*;
 
@@ -15,6 +16,8 @@ pub fn broad_phase(query: BroadPhaseQuery,
                    mut system_data: ResMut<SystemData>,
                    config: ResMut<CollisionConfig>)
 {
+    let start = Instant::now();
+
     if let Some(collision_pairs) = &mut system_data.broad_phase_collision_pairs
     {
         collision_pairs.clear();
@@ -25,6 +28,8 @@ pub fn broad_phase(query: BroadPhaseQuery,
         BroadPhaseType::Rough => Some(broad_phase_rough(&query)),
         BroadPhaseType::SAP => Some(broad_phase_sap(&query)),
     };
+
+    system_data.broad_time = Instant::now() - start;
 }
 
 //Naively add every pairs to check

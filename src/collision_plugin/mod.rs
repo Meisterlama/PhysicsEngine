@@ -1,4 +1,6 @@
+use std::time::Duration;
 use bevy::prelude::*;
+use bevy::time::Stopwatch;
 
 #[allow(unused_imports)]
 use bevy_inspector_egui::Inspectable;
@@ -28,13 +30,16 @@ impl Plugin for CollisionPlugin {
             .add_system(draw_debug::draw_debug.after(narrow_phase::narrow_phase));
 
             app.add_plugin(InspectorPlugin::<CollisionConfig>::new());
-            app.add_system(debug_system::update_debug_info);
+            app.add_system(debug_system::update_debug_info.after(narrow_phase::narrow_phase));
     }
 }
 
-#[derive(Default, Resource, Inspectable)]
+#[derive(Default, Resource)]
 pub struct SystemData
 {
     pub broad_phase_collision_pairs: Option<Vec<CollisionPair>>,
     pub narrow_phase_collision_infos: Option<Vec<CollisionInfo>>,
+
+    pub broad_time: Duration,
+    pub narrow_time: Duration,
 }
