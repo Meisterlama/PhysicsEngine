@@ -1,3 +1,4 @@
+use std::f32::consts::PI;
 use bevy::input::mouse::MouseMotion;
 use bevy::prelude::*;
 use bevy_prototype_debug_lines::*;
@@ -96,22 +97,25 @@ fn move_polygon(
         }
         if entity_to_rotate.is_some()
         {
-            transform.rotation += delta.x.to_radians();
+            transform.rotation += delta.x.to_radians() % (PI*2.0);
         }
     }
 }
 
 fn auto_move_polygon(
     mut q_polygons: Query<(Entity, &PolygonComponent, &mut Transform2d), (Without<EntityToMove>)>,
+    kb_buttons: Res<Input<KeyCode>>,
     time: Res<Time>,
 )
 {
-    for (entity, polygon, mut transform) in q_polygons.iter_mut()
-    {
-        transform.position += Vec2::new(
-            fastrand::f32() - 0.5f32,
-            fastrand::f32() - 0.5f32,
-        );
+    if kb_buttons.pressed(KeyCode::E) {
+        for (entity, polygon, mut transform) in q_polygons.iter_mut()
+        {
+            transform.position += Vec2::new(
+                fastrand::f32() - 0.5f32,
+                fastrand::f32() - 0.5f32,
+            );
+        }
     }
 }
 
