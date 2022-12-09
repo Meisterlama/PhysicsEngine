@@ -1,17 +1,15 @@
 use bevy::prelude::*;
 use bevy_inspector_egui::Inspectable;
 
-#[derive(Default, Clone, Copy, Inspectable)]
-pub struct CollisionPair {
-    pub entity_a: Option<Entity>,
-    pub pos_a: Vec2,
-    pub entity_b: Option<Entity>,
-    pub pos_b: Vec2,
+#[derive(Clone, Copy, Inspectable)]
+pub struct  CollisionPair {
+    pub entity_a: Entity,
+    pub entity_b: Entity,
 }
 
 #[derive(Default, Inspectable)]
 pub struct CollisionInfo {
-    pub pair: CollisionPair,
+    pub collision_pair: Option<CollisionPair>,
     pub location: Vec2,
     pub normal: Vec2,
     pub distance: f32,

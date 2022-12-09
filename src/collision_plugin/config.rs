@@ -19,6 +19,9 @@ pub enum NarrowPhaseType {
 pub struct CollisionConfig {
     pub broad_phase_type: BroadPhaseType,
     pub narrow_phase_type: NarrowPhaseType,
+    #[inspectable(label = "Put non colliding objects to sleep (Bugged: Wake up doesn't work correctly)")]
+    pub put_non_colliding_asleep: bool,
+
     pub draw_debug_broad_phase: bool,
     pub draw_debug_narrow_phase: bool,
     pub draw_debug_aabb: bool,
@@ -30,6 +33,13 @@ pub struct CollisionConfig {
     pub narrow_time: f32,
     #[inspectable(read_only, label = "Total physic time", suffix = " ms")]
     pub total_physics_time: f32,
+    #[inspectable(read_only, label = "Total frame time", suffix = " ms")]
+    pub total_frame_time: f32,
+
+    #[inspectable(read_only)]
+    pub collision_pairs_count: usize,
+    #[inspectable(read_only)]
+    pub awake_entities_count: usize,
 }
 
 impl Default for CollisionConfig
@@ -38,6 +48,7 @@ impl Default for CollisionConfig
         CollisionConfig {
             broad_phase_type: BroadPhaseType::SAP,
             narrow_phase_type: NarrowPhaseType::Enabled,
+            put_non_colliding_asleep: false,
             draw_debug_broad_phase: false,
             draw_debug_narrow_phase: false,
             draw_debug_aabb: false,
@@ -45,6 +56,9 @@ impl Default for CollisionConfig
             broad_time: 0f32,
             narrow_time: 0f32,
             total_physics_time: 0f32,
+            total_frame_time: 0f32,
+            collision_pairs_count: 0usize,
+            awake_entities_count: 0usize,
         }
     }
 }
