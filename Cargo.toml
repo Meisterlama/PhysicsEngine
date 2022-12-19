@@ -18,9 +18,11 @@ debug = true
 opt-level = 3
 debug = true
 
+[profile.release]
+lto = "thin"
+
 [dependencies]
-bevy = { version=  "0.9" }
-bevy_prototype_debug_lines = "0.9"
+bevy = { version=  "0.9" , features = ["dynamic"]}
 bevy-inspector-egui = "0.14"
 fastrand = "1.8.0"
 rayon = "1.6"
