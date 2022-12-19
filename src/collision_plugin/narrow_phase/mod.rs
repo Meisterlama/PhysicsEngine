@@ -42,7 +42,7 @@ pub fn narrow_phase(
     narrow_phase_data.collision_infos.clear();
     let span = info_span!("narrow_phase", name = "dispatching").entered();
 
-    narrow_phase_data.collision_infos = match config.narrow_phase_type {
+    let collision_infos = match config.narrow_phase_type {
         NarrowPhaseType::Disabled => vec!(),
         NarrowPhaseType::SAT => narrow_phase_sat(&broad_phase_data, &query, config.compute_info_collision),
         NarrowPhaseType::GJK => narrow_phase_gjk(&broad_phase_data, &query, config.compute_info_collision),
@@ -50,15 +50,13 @@ pub fn narrow_phase(
 
 
     narrow_phase_data.collided_entities.clear();
-    let mut tmp_hashset = HashSet::new();
-    for info in &narrow_phase_data.collision_infos {
+    for info in &collision_infos {
         let pair = info.collision_pair.unwrap();
 
-        tmp_hashset.insert(pair.entity_a);
-        tmp_hashset.insert(pair.entity_b);
+        narrow_phase_data.collided_entities.insert(pair.entity_a);
+        narrow_phase_data.collided_entities.insert(pair.entity_b);
     }
-
-    narrow_phase_data.collided_entities = tmp_hashset;
+    narrow_phase_data.collision_infos = collision_infos;
 
     narrow_phase_data.time = Instant::now() - start;
 }
@@ -90,6 +88,8 @@ fn narrow_phase_gjk(broad_phase_data: &BroadPhaseData,
                     query: &NarrowPhaseQuery,
                     compute_collision_infos: bool,
 ) -> Vec<CollisionInfo> {
+    let span = info_span!("narrow_phase", name = "GJK").entered();
+
     let collision_infos = broad_phase_data.collision_pairs.par_iter().filter_map(
         |pair| {
 
