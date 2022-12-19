@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 
 use crate::collision_plugin::collision_structs::CollisionInfo;
+use crate::collision_plugin::narrow_phase::helpers::{get_projection, overlaps};
 use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 
@@ -16,21 +17,8 @@ pub fn get_sat_axes_to_test(polygon: &PolygonComponent, transform: &Transform2d)
     return axes;
 }
 
-fn get_projection(polygon: &PolygonComponent, transform: &Transform2d, axis: Vec2) -> Vec2
-{
-    let min = polygon.get_transformed_points(transform).iter().map(move |p| axis.dot(*p)).min_by(move |lhs, rhs| lhs.partial_cmp(rhs).unwrap()).unwrap();
-    let max = polygon.get_transformed_points(transform).iter().map(move |p| axis.dot(*p)).max_by(move |lhs, rhs| lhs.partial_cmp(rhs).unwrap()).unwrap();
-
-    return Vec2::new(min, max);
-}
-
-fn overlaps(lhs: Vec2, rhs: Vec2) -> bool
-{
-    return lhs.y > rhs.x && lhs.x < rhs.y;
-}
-
 pub fn check_collision(p1: &PolygonComponent, t1: &Transform2d,
-                       p2: &PolygonComponent, t2: &Transform2d) -> (bool, CollisionInfo) {
+                       p2: &PolygonComponent, t2: &Transform2d) -> bool {
     let axes_p1 = get_sat_axes_to_test(p1, t1);
     for axis in axes_p1 {
         let p1 = get_projection(p1, t1, axis);
@@ -38,7 +26,7 @@ pub fn check_collision(p1: &PolygonComponent, t1: &Transform2d,
 
         if !overlaps(p1, p2)
         {
-            return (false, CollisionInfo::default());
+            return false;
         }
     }
 
@@ -49,9 +37,10 @@ pub fn check_collision(p1: &PolygonComponent, t1: &Transform2d,
 
         if !overlaps(p1, p2)
         {
-            return (false, CollisionInfo::default());
+            return false;
         }
     }
 
-    return (true, CollisionInfo::default())
+    return true;
 }
+

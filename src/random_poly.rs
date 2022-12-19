@@ -39,7 +39,7 @@ pub fn create_random_poly(config: &RandomPolyConfig) -> (PolygonComponent, Trans
 
     for i in 0..sides
     {
-        let angle = i as f32 * d_angle + (fastrand::f32() * 2f32 * d_angle / 3f32 - d_angle / 3f32);
+        let angle = i as f32 * d_angle;
 
         let point = Vec2::new(angle.to_radians().cos(), angle.to_radians().sin()) * radius as f32;
         points.push(point);

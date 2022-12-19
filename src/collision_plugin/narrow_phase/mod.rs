@@ -1,15 +1,20 @@
+mod sat;
+mod gjk;
+mod epa;
+pub mod helpers;
+
 use std::time::{Duration, Instant};
 
 use bevy::prelude::*;
 use bevy::utils::HashSet;
+use bevy_prototype_debug_lines::DebugLines;
 use rayon::prelude::*;
 
 use crate::aabb::AABB;
-use crate::collision_plugin::{CollisionStage};
+use crate::collision_plugin::CollisionStage;
 use crate::collision_plugin::broad_phase::BroadPhaseData;
 use crate::collision_plugin::collision_structs::{CollisionInfo, CollisionPair};
 use crate::collision_plugin::config::{CollisionConfig, NarrowPhaseType};
-use crate::collision_plugin::sat::check_collision;
 use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 
@@ -29,16 +34,22 @@ pub fn narrow_phase(
     query: NarrowPhaseQuery,
     mut narrow_phase_data: ResMut<NarrowPhaseData>,
     mut broad_phase_data: ResMut<BroadPhaseData>,
-    config: Res<CollisionConfig>)
+    config: Res<CollisionConfig>,
+    mut lines: ResMut<DebugLines>,
+)
 {
+
     let start = Instant::now();
 
     narrow_phase_data.collision_infos.clear();
+    let span = info_span!("narrow_phase", name = "dispatching").entered();
 
     narrow_phase_data.collision_infos = match config.narrow_phase_type {
         NarrowPhaseType::Disabled => vec!(),
-        NarrowPhaseType::Enabled => narrow_phase_precise(&broad_phase_data, &query)
+        NarrowPhaseType::SAT => narrow_phase_sat(&broad_phase_data, &query, config.compute_info_collision),
+        NarrowPhaseType::GJK => narrow_phase_gjk(&broad_phase_data, &query, config.compute_info_collision),
     };
+
 
     narrow_phase_data.collided_entities.clear();
     let mut tmp_hashset = HashSet::new();
@@ -54,25 +65,50 @@ pub fn narrow_phase(
     narrow_phase_data.time = Instant::now() - start;
 }
 
-fn narrow_phase_precise(broad_phase_data: &BroadPhaseData,
-                        query: &NarrowPhaseQuery,
+fn narrow_phase_sat(broad_phase_data: &BroadPhaseData,
+                    query: &NarrowPhaseQuery,
+                    compute_collision_infos: bool,
 ) -> Vec<CollisionInfo>
 {
+    let span = info_span!("narrow_phase", name = "SAT").entered();
 
     let collision_infos = broad_phase_data.collision_pairs.par_iter().filter_map(
         |pair| {
             let (e1, p1, t1, a1) = query.get(pair.entity_a).unwrap();
             let (e2, p2, t2, a2) = query.get(pair.entity_b).unwrap();
-            let (collided, collision_info) = check_collision(&p1, &t1, &p2, &t2);
+            let collided = sat::check_collision(&p1, &t1, &p2, &t2);
 
             if collided == true {
-                return Some(CollisionInfo{
+                return Some(CollisionInfo {
                     collision_pair: Some(pair.clone()),
                     location: Default::default(),
                     normal: Default::default(),
                     distance: 0.0,
-                })
+                });
+            }
+            return None;
+        }
+    ).collect::<Vec<_>>();
 
+    return collision_infos;
+}
+
+fn narrow_phase_gjk(broad_phase_data: &BroadPhaseData,
+                    query: &NarrowPhaseQuery,
+                    compute_collision_infos: bool,
+) -> Vec<CollisionInfo> {
+    let collision_infos = broad_phase_data.collision_pairs.par_iter().filter_map(
+        |pair| {
+
+            let (e1, p1, t1, a1) = query.get(pair.entity_a).unwrap();
+            let (e2, p2, t2, a2) = query.get(pair.entity_b).unwrap();
+            let (collided, simplex) = gjk::check_collision(&p1, &t1, &p2, &t2);
+
+            if collided == true {
+
+                let mut collision_info = if compute_collision_infos { gjk::get_info_collisions(&p1, &t1, &p2, &t2, simplex) } else { CollisionInfo::default() };
+                collision_info.collision_pair = Some(pair.clone());
+                return Some(collision_info);
             }
             return None;
         }

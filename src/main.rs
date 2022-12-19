@@ -33,7 +33,7 @@ fn startup_add_polygons(mut commands: Commands)
 {
     let config = RandomPolyConfig::default();
 
-    for _ in 0..200
+    for _ in 0..100
     {
         commands.spawn(random_poly::create_random_poly(&config));
     }
@@ -54,7 +54,7 @@ fn main() {
         .add_plugins(DefaultPlugins.set(WindowPlugin {
             window: WindowDescriptor {
                 title: "rusted_phyisics".to_string(),
-                present_mode: PresentMode::AutoVsync,
+                present_mode: PresentMode::AutoNoVsync,
                 ..default()
             },
             ..default()

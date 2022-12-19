@@ -12,14 +12,18 @@ pub enum BroadPhaseType {
 #[derive(Inspectable)]
 pub enum NarrowPhaseType {
     Disabled,
-    Enabled,
+    SAT,
+    GJK,
 }
 
 #[derive(Resource, Inspectable)]
 pub struct CollisionConfig {
     pub broad_phase_type: BroadPhaseType,
     pub narrow_phase_type: NarrowPhaseType,
-    #[inspectable(label = "Put non colliding objects to sleep (Bugged: Wake up doesn't work correctly)")]
+
+    pub compute_info_collision: bool,
+
+    #[inspectable(label = "Put non colliding objects to sleep\n(Bugged: Wake up doesn't work correctly)")]
     pub put_non_colliding_asleep: bool,
 
     pub draw_debug_broad_phase: bool,
@@ -47,10 +51,11 @@ impl Default for CollisionConfig
     fn default() -> Self {
         CollisionConfig {
             broad_phase_type: BroadPhaseType::SAP,
-            narrow_phase_type: NarrowPhaseType::Enabled,
+            narrow_phase_type: NarrowPhaseType::GJK,
+            compute_info_collision: false,
             put_non_colliding_asleep: false,
             draw_debug_broad_phase: false,
-            draw_debug_narrow_phase: false,
+            draw_debug_narrow_phase: true,
             draw_debug_aabb: false,
             entity_count: 0usize,
             broad_time: 0f32,

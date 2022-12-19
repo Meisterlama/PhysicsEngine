@@ -15,7 +15,6 @@ mod broad_phase;
 mod collision_structs;
 mod narrow_phase;
 mod config;
-mod sat;
 mod draw_debug;
 mod debug_system;
 mod refresh_entities;

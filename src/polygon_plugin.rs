@@ -56,7 +56,8 @@ fn select_polygons(
         lines.line((world_pos - Vec2::ONE).extend(0f32), (world_pos + Vec2::ONE).extend(0f32), 0f32);
 
         for (entity, _polygon, transform, aabb, entity_to_rotate, entity_to_move) in q_polygons.iter() {
-            let is_point_inside = aabb.is_point_inside(transform.inv_translate(&world_pos));
+            // let is_point_inside = aabb.is_point_inside(transform.inv_translate(&world_pos));
+            let is_point_inside = _polygon.is_point_inside(transform, &world_pos);
             if buttons.just_pressed(MouseButton::Left) && entity_to_move.is_none() && is_point_inside {
                 commands.entity(entity).insert(EntityToMove);
             } else if buttons.just_released(MouseButton::Left) && entity_to_move.is_some() {
@@ -123,7 +124,7 @@ impl Plugin for DrawPolygonPlugin {
     fn build(&self, app: &mut App) {
         app
             .init_resource::<DrawPoly>()
-            .add_system(draw_polygons)
+            // .add_system(draw_polygons)
             .add_system(select_polygons)
             .add_system(move_polygon)
             .add_system(auto_move_polygon);

@@ -11,10 +11,12 @@ resolver = "2" # Important! wgpu/Bevy needs this!
 # Enable a small amount of optimization in debug mode
 [profile.dev]
 opt-level = 1
+debug = true
 
 # Enable high optimizations for dependencies (incl. Bevy), but not for our code:
 [profile.dev.package."*"]
 opt-level = 3
+debug = true
 
 [dependencies]
 bevy = { version=  "0.9" }
