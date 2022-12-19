@@ -35,7 +35,9 @@ pub fn broad_phase(query: BroadPhaseQueryAwake,
     let start = Instant::now();
 
     match config.broad_phase_type {
-        BroadPhaseType::Disabled => {}
+        BroadPhaseType::Disabled => {
+            broad_phase_data.collision_pairs.clear();
+        }
         BroadPhaseType::Rough => {
             broad_phase_data.collision_pairs = rough::compute_collision_pairs(&query);
         }
