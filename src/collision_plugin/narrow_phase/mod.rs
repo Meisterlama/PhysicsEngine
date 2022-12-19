@@ -15,7 +15,6 @@ use crate::transform2d::Transform2d;
 
 mod sat;
 mod gjk;
-mod epa;
 pub mod helpers;
 
 type NarrowPhaseQuery<'w, 's> = Query<'w, 's, (Entity, &'static mut PolygonComponent, &'static Transform2d, &'static AABB)>;
@@ -35,7 +34,6 @@ pub fn narrow_phase(
     mut narrow_phase_data: ResMut<NarrowPhaseData>,
     mut broad_phase_data: ResMut<BroadPhaseData>,
     config: Res<CollisionConfig>,
-    mut lines: ResMut<DebugLines>,
 )
 {
 
@@ -79,12 +77,7 @@ fn narrow_phase_sat(broad_phase_data: &BroadPhaseData,
             let collided = sat::check_collision(&p1, &t1, &p2, &t2);
 
             if collided == true {
-                return Some(CollisionInfo {
-                    collision_pair: Some(pair.clone()),
-                    location: Default::default(),
-                    normal: Default::default(),
-                    distance: 0.0,
-                });
+                return Some(CollisionInfo::new(&pair));
             }
             return None;
         }
