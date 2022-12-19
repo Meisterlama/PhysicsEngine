@@ -1,4 +1,5 @@
 use std::f32::consts::PI;
+
 use bevy::input::mouse::MouseMotion;
 use bevy::prelude::*;
 use bevy_prototype_debug_lines::*;
@@ -104,7 +105,7 @@ fn move_polygon(
 }
 
 fn auto_move_polygon(
-    mut q_polygons: Query<(Entity, &PolygonComponent, &mut Transform2d), (Without<EntityToMove>)>,
+    mut q_polygons: Query<(Entity, &PolygonComponent, &mut Transform2d), Without<EntityToMove>>,
     kb_buttons: Res<Input<KeyCode>>,
     time: Res<Time>,
 )
@@ -124,7 +125,7 @@ impl Plugin for DrawPolygonPlugin {
     fn build(&self, app: &mut App) {
         app
             .init_resource::<DrawPoly>()
-            // .add_system(draw_polygons)
+            .add_system(draw_polygons)
             .add_system(select_polygons)
             .add_system(move_polygon)
             .add_system(auto_move_polygon);

@@ -1,6 +1,6 @@
 use bevy::diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin};
-use bevy::prelude::*;
 use bevy::math::Vec3Swizzles;
+use bevy::prelude::*;
 
 use crate::{MainCamera, random_poly};
 use crate::polygon_component::PolygonComponent;

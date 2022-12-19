@@ -1,8 +1,3 @@
-mod sat;
-mod gjk;
-mod epa;
-pub mod helpers;
-
 use std::time::{Duration, Instant};
 
 use bevy::prelude::*;
@@ -11,12 +6,17 @@ use bevy_prototype_debug_lines::DebugLines;
 use rayon::prelude::*;
 
 use crate::aabb::AABB;
-use crate::collision_plugin::CollisionStage;
 use crate::collision_plugin::broad_phase::BroadPhaseData;
-use crate::collision_plugin::collision_structs::{CollisionInfo, CollisionPair};
+use crate::collision_plugin::collision_structs::CollisionInfo;
+use crate::collision_plugin::CollisionStage;
 use crate::collision_plugin::config::{CollisionConfig, NarrowPhaseType};
 use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
+
+mod sat;
+mod gjk;
+mod epa;
+pub mod helpers;
 
 type NarrowPhaseQuery<'w, 's> = Query<'w, 's, (Entity, &'static mut PolygonComponent, &'static Transform2d, &'static AABB)>;
 

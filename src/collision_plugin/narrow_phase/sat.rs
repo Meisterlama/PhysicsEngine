@@ -1,6 +1,5 @@
 use bevy::prelude::*;
 
-use crate::collision_plugin::collision_structs::CollisionInfo;
 use crate::collision_plugin::narrow_phase::helpers::{get_projection, overlaps};
 use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;

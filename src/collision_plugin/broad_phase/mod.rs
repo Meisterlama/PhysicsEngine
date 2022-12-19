@@ -1,8 +1,8 @@
 use std::time::{Duration, Instant};
-use bevy::prelude::*;
-use rayon::prelude::*;
 
-use crate::aabb::{AABB, check_collision};
+use bevy::prelude::*;
+
+use crate::aabb::AABB;
 use crate::collision_plugin::{CollisionStage, PhysicsAwake};
 use crate::collision_plugin::collision_structs::CollisionPair;
 use crate::collision_plugin::config::{BroadPhaseType, CollisionConfig};
@@ -12,7 +12,7 @@ use crate::transform2d::Transform2d;
 mod rough;
 mod sap;
 
-pub type BroadPhaseQueryAwake<'w, 's> = Query<'w, 's, (Entity, &'static PolygonComponent, &'static Transform2d, &'static AABB), (With<PhysicsAwake>)>;
+pub type BroadPhaseQueryAwake<'w, 's> = Query<'w, 's, (Entity, &'static PolygonComponent, &'static Transform2d, &'static AABB), With<PhysicsAwake>>;
 pub type BroadPhaseQuery<'w, 's> = Query<'w, 's, (Entity, &'static PolygonComponent, &'static Transform2d, &'static AABB)>;
 
 pub struct BroadPhasePlugin;

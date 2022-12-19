@@ -15,42 +15,35 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="379911d1-f328-4cb0-b4d0-4e8abfd3f981" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/RustedPhysics.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/milestones/BroadPhase/SRC/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/milestones/BroadPhase/SRC/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rust-toolchain.toml" beforeDir="false" afterPath="$PROJECT_DIR$/rust-toolchain.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aabb.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/aabb.rs" afterDir="false" />
+    <list default="true" id="379911d1-f328-4cb0-b4d0-4e8abfd3f981" name="Changes" comment="GJK+EPA and line endings correction">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/aabb_update_system.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/aabb_update_system.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/camera_plugin.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera_plugin.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/collision_plugin/broad_phase/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/broad_phase/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/collision_plugin/broad_phase/rough.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/broad_phase/rough.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/collision_plugin/broad_phase/sap.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/broad_phase/sap.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/collision_structs.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/collision_structs.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/collision_plugin/config.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/config.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/collision_plugin/debug_system.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/debug_system.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/collision_plugin/draw_debug.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/draw_debug.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/collision_plugin/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/gjk.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/gjk.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/helpers.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/helpers.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/refresh_entities.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/refresh_entities.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/sat.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/sat.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/debug_plugin.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/debug_plugin.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/drawable.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/drawable.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/polygon_component.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/polygon_component.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/polygon_plugin.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/polygon_plugin.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/polygon_renderer/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/polygon_renderer/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/random_poly.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/random_poly.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/transform2d.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/transform2d.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
   </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
@@ -91,7 +84,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Cargo.Trace">
+  <component name="RunManager" selected="Cargo.Run">
     <configuration name="Debug" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run --package rusted_physics --bin rusted_physics" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -163,12 +156,24 @@
       <updated>1671296531115</updated>
       <workItem from="1671296533194" duration="1613000" />
       <workItem from="1671440698043" duration="17697000" />
-      <workItem from="1671463480155" duration="1753000" />
+      <workItem from="1671463480155" duration="2670000" />
     </task>
+    <task id="LOCAL-00001" summary="GJK+EPA and line endings correction">
+      <created>1671465366148</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1671465366148</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="GJK+EPA and line endings correction" />
+    <option name="LAST_COMMIT_MESSAGE" value="GJK+EPA and line endings correction" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

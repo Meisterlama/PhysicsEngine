@@ -1,8 +1,7 @@
 use bevy::prelude::*;
-use bevy_prototype_debug_lines::DebugLines;
+
 use crate::collision_plugin::collision_structs::CollisionInfo;
-use crate::collision_plugin::CollisionStage;
-use crate::collision_plugin::narrow_phase::helpers::{find_furthest_point, get_projection, intersect_segments, overlaps, same_direction, triple_product};
+use crate::collision_plugin::narrow_phase::helpers::{find_furthest_point, triple_product};
 use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 
@@ -23,7 +22,6 @@ pub fn check_collision(p1: &PolygonComponent, t1: &Transform2d,
 
     let mut a = get_support(p1, t1, p2, t2, Vec2::X);
     simplex[0] = a;
-    ;
 
     let mut direction = -a;
 

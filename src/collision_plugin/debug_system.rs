@@ -1,4 +1,5 @@
 pub use bevy::prelude::*;
+
 use crate::aabb::AABB;
 use crate::collision_plugin::broad_phase::BroadPhaseData;
 use crate::collision_plugin::config::CollisionConfig;

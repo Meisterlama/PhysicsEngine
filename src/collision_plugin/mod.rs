@@ -1,13 +1,9 @@
-use std::time::Duration;
-
 use bevy::prelude::*;
-use bevy::time::Stopwatch;
 #[allow(unused_imports)]
 use bevy_inspector_egui::Inspectable;
 #[allow(unused_imports)]
 use bevy_inspector_egui::InspectorPlugin;
 
-use collision_structs::{CollisionInfo, CollisionPair};
 use config::CollisionConfig;
 use refresh_entities::refresh_entities;
 

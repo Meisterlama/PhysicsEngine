@@ -1,6 +1,7 @@
 use bevy::prelude::*;
-use bevy::render::mesh::{MeshVertexAttribute, PrimitiveTopology};
+use bevy::render::mesh::PrimitiveTopology;
 use bevy::sprite::MaterialMesh2dBundle;
+
 use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 

@@ -1,6 +1,6 @@
 use bevy::prelude::*;
-use crate::aabb::AABB;
 
+use crate::aabb::AABB;
 use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 

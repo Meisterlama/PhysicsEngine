@@ -24,10 +24,6 @@ pub fn overlaps(lhs: Vec2, rhs: Vec2) -> bool
     return lhs.y > rhs.x && lhs.x < rhs.y;
 }
 
-pub fn same_direction(lhs: &Vec2, rhs: &Vec2) -> bool {
-    return lhs.dot(*rhs) > 0f32;
-}
-
 pub fn triple_product(a: &Vec2, b: &Vec2, c: &Vec2) -> Vec2
 {
     let a = a.extend(0f32);

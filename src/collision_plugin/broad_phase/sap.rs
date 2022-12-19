@@ -1,14 +1,16 @@
-use rayon::prelude::*;
 use bevy::prelude::*;
+use rayon::prelude::*;
+
+use crate::aabb::check_collision;
+
+use super::BroadPhaseData;
 use super::BroadPhaseQueryAwake;
 use super::CollisionPair;
-use crate::aabb::{AABB, check_collision};
-use super::BroadPhaseData;
 
 //Use Sweep & Prune to create a vector of CollisionPair
 pub fn compute_collision_pairs(query: &BroadPhaseQueryAwake, broad_phase_data: &mut BroadPhaseData) -> Vec<CollisionPair>
 {
-    let span = info_span!("broad_phase", name = "compute SAP collisions").entered();
+    let _span = info_span!("broad_phase", name = "compute SAP collisions").entered();
 
     let collision_pairs: Vec<CollisionPair> = broad_phase_data.sorted_entities.par_iter().enumerate().map(|(i, &entity1)|
         {

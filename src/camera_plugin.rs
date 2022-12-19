@@ -1,5 +1,4 @@
 use bevy::input::mouse::{MouseMotion, MouseWheel};
-use bevy::math::Vec2Swizzles;
 use bevy::prelude::*;
 
 use crate::MainCamera;

@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 
 use crate::aabb::AABB;
-use crate::collision_plugin::broad_phase::{BroadPhaseData, BroadPhaseQuery, BroadPhaseQueryAwake};
+use crate::collision_plugin::broad_phase::{BroadPhaseData, BroadPhaseQuery};
 use crate::collision_plugin::config::CollisionConfig;
 use crate::collision_plugin::narrow_phase::NarrowPhaseData;
 use crate::collision_plugin::PhysicsAwake;

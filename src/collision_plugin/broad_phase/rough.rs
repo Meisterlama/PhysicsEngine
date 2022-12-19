@@ -1,5 +1,6 @@
-use rayon::prelude::*;
 use bevy::prelude::*;
+use rayon::prelude::*;
+
 use super::BroadPhaseQueryAwake;
 use super::CollisionPair;
 
