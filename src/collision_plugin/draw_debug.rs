@@ -51,7 +51,7 @@ pub fn draw_debug(
                 let start_location = collision_info.location.extend(0f32);
                 let end_location = start_location - collision_info.normal.extend(0f32) * collision_info.distance;
 
-                lines.line_colored(start_location, end_location, 0f32, Color::PURPLE);
+                lines.line_colored(start_location, end_location, 0f32, Color::CYAN);
             }
         }
     }

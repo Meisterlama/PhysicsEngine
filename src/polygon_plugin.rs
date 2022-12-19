@@ -54,8 +54,6 @@ fn select_polygons(
 
         let world_pos: Vec2 = world_pos.truncate();
 
-        lines.line((world_pos - Vec2::ONE).extend(0f32), (world_pos + Vec2::ONE).extend(0f32), 0f32);
-
         for (entity, _polygon, transform, aabb, entity_to_rotate, entity_to_move) in q_polygons.iter() {
             // let is_point_inside = aabb.is_point_inside(transform.inv_translate(&world_pos));
             let is_point_inside = _polygon.is_point_inside(transform, &world_pos);
