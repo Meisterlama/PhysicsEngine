@@ -17,7 +17,7 @@ mod sat;
 mod gjk;
 pub mod helpers;
 
-type NarrowPhaseQuery<'w, 's> = Query<'w, 's, (Entity, &'static mut PolygonComponent, &'static Transform2d, &'static AABB)>;
+type NarrowPhaseQuery<'w, 's> = Query<'w, 's, (&'static mut PolygonComponent, &'static Transform2d)>;
 
 pub struct NarrowPhasePlugin;
 
@@ -72,8 +72,8 @@ fn narrow_phase_sat(broad_phase_data: &BroadPhaseData,
 
     let collision_infos = broad_phase_data.collision_pairs.par_iter().filter_map(
         |pair| {
-            let (e1, p1, t1, a1) = query.get(pair.entity_a).unwrap();
-            let (e2, p2, t2, a2) = query.get(pair.entity_b).unwrap();
+            let (p1, t1) = query.get(pair.entity_a).unwrap();
+            let (p2, t2) = query.get(pair.entity_b).unwrap();
             let collided = sat::check_collision(&p1, &t1, &p2, &t2);
 
             if collided == true {
@@ -93,8 +93,8 @@ fn narrow_phase_gjk(broad_phase_data: &BroadPhaseData,
     let collision_infos = broad_phase_data.collision_pairs.par_iter().filter_map(
         |pair| {
 
-            let (e1, p1, t1, a1) = query.get(pair.entity_a).unwrap();
-            let (e2, p2, t2, a2) = query.get(pair.entity_b).unwrap();
+            let (p1, t1) = query.get(pair.entity_a).unwrap();
+            let (p2, t2) = query.get(pair.entity_b).unwrap();
             let (collided, simplex) = gjk::check_collision(&p1, &t1, &p2, &t2);
 
             if collided == true {
