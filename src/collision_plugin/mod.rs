@@ -38,11 +38,11 @@ impl Plugin for CollisionPlugin {
 
         // Stages
         app
-            .add_stage_after(CoreStage::PreUpdate, CollisionStage::PreUpdate, SystemStage::single_threaded())
-            .add_stage_after(CollisionStage::PreUpdate, CollisionStage::BroadPhase, SystemStage::single_threaded())
-            .add_stage_after(CollisionStage::BroadPhase, CollisionStage::NarrowPhase, SystemStage::single_threaded())
-            .add_stage_after(CollisionStage::NarrowPhase, CollisionStage::CollisionResponse, SystemStage::single_threaded())
-            .add_stage_after(CollisionStage::CollisionResponse, CollisionStage::PostUpdate, SystemStage::single_threaded());
+            .add_stage(CollisionStage::PreUpdate, SystemStage::parallel())
+            .add_stage_after(CollisionStage::PreUpdate, CollisionStage::BroadPhase, SystemStage::parallel())
+            .add_stage_after(CollisionStage::BroadPhase, CollisionStage::NarrowPhase, SystemStage::parallel())
+            .add_stage_after(CollisionStage::NarrowPhase, CollisionStage::CollisionResponse, SystemStage::parallel())
+            .add_stage_after(CollisionStage::CollisionResponse, CollisionStage::PostUpdate, SystemStage::parallel());
 
         app.add_system_to_stage(CollisionStage::PreUpdate, refresh_entities);
 
