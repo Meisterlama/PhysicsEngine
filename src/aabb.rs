@@ -1,7 +1,5 @@
 use bevy::prelude::*;
-use bevy_prototype_debug_lines::DebugLines;
 
-use crate::drawable::Drawable;
 use crate::transform2d::Transform2d;
 
 #[derive(Component, Reflect)]
@@ -45,6 +43,18 @@ impl AABB {
         }
         return bounding_box;
     }
+
+    pub fn get_points(&self, t: &Transform2d) -> Vec<Vec3> {
+        let min = t.translate(&self.min);
+        let max = t.translate(&self.max);
+        return vec!(
+            Vec3::new(min.x, min.y, 0f32),
+            Vec3::new(max.x, min.y, 0f32),
+            Vec3::new(max.x, max.y, 0f32),
+            Vec3::new(min.x, max.y, 0f32),
+            Vec3::new(min.x, min.y, 0f32),
+        )
+    }
 }
 
 impl Default for AABB {
@@ -54,35 +64,6 @@ impl Default for AABB {
             max: Vec2::default(),
             draw_color: Color::GRAY,
         }
-    }
-}
-
-impl Drawable for AABB {
-    fn draw(&self, transform: &Transform2d, lines: &mut ResMut<DebugLines>) {
-        lines.line_colored(
-            transform.translate(&Vec2::new(self.min.x, self.min.y)).extend(0f32),
-            transform.translate(&Vec2::new(self.max.x, self.min.y)).extend(0f32),
-            0f32,
-            self.draw_color,
-        );
-        lines.line_colored(
-            transform.translate(&Vec2::new(self.max.x, self.min.y)).extend(0f32),
-            transform.translate(&Vec2::new(self.max.x, self.max.y)).extend(0f32),
-            0f32,
-            self.draw_color,
-        );
-        lines.line_colored(
-            transform.translate(&Vec2::new(self.max.x, self.max.y)).extend(0f32),
-            transform.translate(&Vec2::new(self.min.x, self.max.y)).extend(0f32),
-            0f32,
-            self.draw_color,
-        );
-        lines.line_colored(
-            transform.translate(&Vec2::new(self.min.x, self.max.y)).extend(0f32),
-            transform.translate(&Vec2::new(self.min.x, self.min.y)).extend(0f32),
-            0f32,
-            self.draw_color,
-        );
     }
 }
 

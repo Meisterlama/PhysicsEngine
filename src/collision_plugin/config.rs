@@ -51,7 +51,7 @@ impl Default for CollisionConfig
         CollisionConfig {
             broad_phase_type: BroadPhaseType::SAP,
             narrow_phase_type: NarrowPhaseType::GJK,
-            compute_info_collision: false,
+            compute_info_collision: true,
             put_non_colliding_asleep: false,
             draw_debug_broad_phase: false,
             draw_debug_narrow_phase: true,

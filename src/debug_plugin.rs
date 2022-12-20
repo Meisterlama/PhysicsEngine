@@ -10,14 +10,19 @@ pub struct DebugPlugin;
 
 fn add_polygons(mut commands: Commands, keys: Res<Input<KeyCode>>,
                 query: Query<Entity, With<PolygonComponent>>,
-                q_camera: Query<(&Transform, &OrthographicProjection), With<MainCamera>>,
+                q_camera: Query<(&Transform, &Projection), With<MainCamera>>,
 )
 {
     let (transform, proj) = q_camera.single();
     let mut config = RandomPolyConfig::default();
 
-    config.min_bounds *= proj.scale;
-    config.max_bounds *= proj.scale;
+    let scale = match proj {
+        Projection::Perspective(proj) => {1f32}
+        Projection::Orthographic(proj) => {proj.scale}
+    };
+
+    config.min_bounds *= scale;
+    config.max_bounds *= scale;
     config.min_bounds += transform.translation.xy();
     config.max_bounds += transform.translation.xy();
 

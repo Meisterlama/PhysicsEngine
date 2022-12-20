@@ -4,13 +4,13 @@
 use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
 use bevy::prelude::*;
 use bevy::window::PresentMode;
-use bevy_prototype_debug_lines::*;
+use bevy_polyline::prelude::*;
 
 use crate::aabb_update_system::aabb_update_system;
 use crate::camera_plugin::CameraControllerPlugin;
-use crate::collision_plugin::CollisionPlugin;
+use crate::collision_plugin::{CollisionPlugin, CollisionStage};
 use crate::debug_plugin::DebugPlugin;
-use crate::polygon_plugin::{DrawPoly, DrawPolygonPlugin};
+use crate::polygon_plugin::DrawPolygonPlugin;
 use crate::polygon_renderer::PolygonRendererPlugin;
 use crate::random_poly::RandomPolyConfig;
 
@@ -19,7 +19,6 @@ struct MainCamera;
 
 mod polygon_component;
 mod aabb;
-mod drawable;
 mod polygon_plugin;
 mod collision_plugin;
 mod random_poly;
@@ -28,12 +27,13 @@ mod camera_plugin;
 mod debug_plugin;
 mod aabb_update_system;
 mod polygon_renderer;
+mod line_renderer;
 
 fn startup_add_polygons(mut commands: Commands)
 {
     let config = RandomPolyConfig::default();
 
-    for _ in 0..100
+    for _ in 0..60000
     {
         commands.spawn(random_poly::create_random_poly(&config));
     }
@@ -41,9 +41,14 @@ fn startup_add_polygons(mut commands: Commands)
 
 fn add_camera(mut commands: Commands)
 {
-    commands.spawn((Camera2dBundle {
-        transform: Transform::from_xyz(0.0, 0.0, 5.0),
-        ..default()
+    commands.spawn((Camera3dBundle {
+        transform: Transform::from_xyz(0.0, 0.0, 500.0),
+        camera: Camera {
+            hdr: true,
+            ..default()
+        },
+        projection: Projection::Orthographic(OrthographicProjection::default()),
+        ..Camera3dBundle::default()
     }, MainCamera));
 }
 
@@ -60,24 +65,19 @@ fn main() {
             ..default()
         }))
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
-        .add_plugin(DebugLinesPlugin::default())
+        .add_plugin(PolylinePlugin)
         .add_plugin(DrawPolygonPlugin)
         .add_plugin(CameraControllerPlugin)
         .add_plugin(CollisionPlugin)
         .add_plugin(DebugPlugin)
         .add_startup_system(add_camera)
         .add_startup_system(startup_add_polygons)
-        .add_system(aabb_update_system);
+        .add_system(aabb_update_system)
+        .add_system_to_stage(CollisionStage::PostUpdate, line_renderer::render_lines);
 
-    // Set to false to use mesh_renderer. It is slower for the moment
-    const DRAW_LINE: bool = true;
-    if DRAW_LINE
-    {
-            app.insert_resource(DrawPoly(true));
-    }
-    else {
+
         app.add_plugin(PolygonRendererPlugin);
-    }
+
 
     app.run();
 }

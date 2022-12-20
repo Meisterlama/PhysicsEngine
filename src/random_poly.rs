@@ -63,11 +63,11 @@ impl Default for RandomPolyConfig {
             min_points: 3,
             max_points: 12,
             min_radius: 1,
-            max_radius: 10,
+            max_radius: 5,
             min_rotation: 0,
             max_rotation: 360,
-            min_bounds: Vec2::new(-400f32, -200f32),
-            max_bounds: Vec2::new(400f32, 200f32),
+            min_bounds: Vec2::new(-800f32, -400f32),
+            max_bounds: Vec2::new(800f32, 400f32),
         }
     }
 }

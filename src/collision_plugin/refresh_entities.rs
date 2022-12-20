@@ -1,20 +1,22 @@
 use bevy::prelude::*;
+use rayon::prelude::*;
 
 use crate::aabb::AABB;
-use crate::collision_plugin::broad_phase::{BroadPhaseData, BroadPhaseQuery};
+use crate::collision_plugin::broad_phase::{BroadPhaseData};
 use crate::collision_plugin::config::CollisionConfig;
 use crate::collision_plugin::narrow_phase::NarrowPhaseData;
 use crate::collision_plugin::PhysicsAwake;
+use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 
 pub fn refresh_entities(
     mut broad_phase_data: ResMut<BroadPhaseData>,
-    mut narrow_phase_data: ResMut<NarrowPhaseData>,
-    mut config: Res<CollisionConfig>,
+    narrow_phase_data: ResMut<NarrowPhaseData>,
+    config: Res<CollisionConfig>,
     entity_added: Query<(Entity), (Added<AABB>, With<Transform2d>)>,
-    entity_changed: Query<(Entity, Option<&PhysicsAwake>), (Or<(Changed<AABB>, Changed<Transform2d>)>)>,
+    entity_changed: Query<(Entity, Option<&PhysicsAwake>), (Or<(Changed<AABB>, Changed<Transform2d>)>, With<PolygonComponent>)>,
     entity_removed: RemovedComponents<AABB>,
-    query: BroadPhaseQuery,
+    query: Query<(&Transform2d, &AABB), With<PolygonComponent>>,
     mut commands: Commands,
 )
 {
@@ -50,9 +52,9 @@ pub fn refresh_entities(
 
     if !entity_changed.is_empty() || !entity_added.is_empty() || !entity_removed.is_empty()
     {
-        broad_phase_data.sorted_entities.sort_by(|&e1, &e2| {
-            let (_, p1, t1, a1) = query.get(e1).unwrap();
-            let (_, p2, t2, a2) = query.get(e2).unwrap();
+        broad_phase_data.sorted_entities.par_sort_by(|&e1, &e2| {
+            let (t1, a1) = query.get(e1).unwrap();
+            let (t2, a2) = query.get(e2).unwrap();
             return (t1.translate(&a1.min).x).partial_cmp(&(t2.translate(&a2.min).x)).unwrap();
         });
     }

@@ -2,10 +2,8 @@ use std::time::{Duration, Instant};
 
 use bevy::prelude::*;
 use bevy::utils::HashSet;
-use bevy_prototype_debug_lines::DebugLines;
 use rayon::prelude::*;
 
-use crate::aabb::AABB;
 use crate::collision_plugin::broad_phase::BroadPhaseData;
 use crate::collision_plugin::collision_structs::CollisionInfo;
 use crate::collision_plugin::CollisionStage;
@@ -32,7 +30,7 @@ impl Plugin for NarrowPhasePlugin {
 pub fn narrow_phase(
     query: NarrowPhaseQuery,
     mut narrow_phase_data: ResMut<NarrowPhaseData>,
-    mut broad_phase_data: ResMut<BroadPhaseData>,
+    broad_phase_data: Res<BroadPhaseData>,
     config: Res<CollisionConfig>,
 )
 {
@@ -63,7 +61,7 @@ pub fn narrow_phase(
 
 fn narrow_phase_sat(broad_phase_data: &BroadPhaseData,
                     query: &NarrowPhaseQuery,
-                    compute_collision_infos: bool,
+                    _compute_collision_infos: bool,
 ) -> Vec<CollisionInfo>
 {
     let span = info_span!("narrow_phase", name = "SAT").entered();

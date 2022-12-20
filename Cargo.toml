@@ -19,10 +19,12 @@ opt-level = 3
 debug = true
 
 [profile.release]
-lto = "thin"
+opt-level = 3
+debug = true
 
 [dependencies]
-bevy = { version=  "0.9" , features = ["dynamic"]}
+bevy = { version=  "0.9"}
+bevy_polyline = "0.4"
 bevy-inspector-egui = "0.14"
 fastrand = "1.8.0"
 rayon = "1.6"

@@ -13,7 +13,6 @@ mod rough;
 mod sap;
 
 pub type BroadPhaseQueryAwake<'w, 's> = Query<'w, 's, (Entity, &'static PolygonComponent, &'static Transform2d, &'static AABB), With<PhysicsAwake>>;
-pub type BroadPhaseQuery<'w, 's> = Query<'w, 's, (Entity, &'static PolygonComponent, &'static Transform2d, &'static AABB)>;
 
 pub struct BroadPhasePlugin;
 
@@ -33,16 +32,15 @@ pub fn broad_phase(query: BroadPhaseQueryAwake,
     let span = info_span!("broad_phase", name = "dispatching").entered();
 
     let start = Instant::now();
+    broad_phase_data.collision_pairs.clear();
 
     match config.broad_phase_type {
-        BroadPhaseType::Disabled => {
-            broad_phase_data.collision_pairs.clear();
-        }
+        BroadPhaseType::Disabled => {}
         BroadPhaseType::Rough => {
-            broad_phase_data.collision_pairs = rough::compute_collision_pairs(&query);
+            rough::compute_collision_pairs(&query, &mut broad_phase_data.collision_pairs);
         }
         BroadPhaseType::SAP => {
-            broad_phase_data.collision_pairs = sap::compute_collision_pairs(&query, &mut broad_phase_data);
+            sap::compute_collision_pairs(&query, &mut broad_phase_data);
         }
     }
 
