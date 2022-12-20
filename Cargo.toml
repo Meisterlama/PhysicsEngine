@@ -21,6 +21,7 @@ debug = true
 [profile.release]
 opt-level = 3
 debug = true
+lto = "thin"
 
 [dependencies]
 bevy = { version=  "0.9"}

@@ -15,25 +15,13 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="379911d1-f328-4cb0-b4d0-4e8abfd3f981" name="Changes" comment="GJK+EPA and line endings correction">
+    <list default="true" id="379911d1-f328-4cb0-b4d0-4e8abfd3f981" name="Changes" comment="Various optimizations + remove old line renderer">
+      <change beforePath="$PROJECT_DIR$/.cargo/config.toml" beforeDir="false" afterPath="$PROJECT_DIR$/.cargo/config.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aabb_update_system.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/aabb_update_system.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/camera_plugin.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/camera_plugin.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/broad_phase/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/broad_phase/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/broad_phase/rough.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/broad_phase/rough.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/broad_phase/sap.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/broad_phase/sap.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/config.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/config.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/debug_system.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/debug_system.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/draw_debug.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/draw_debug.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/gjk.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/gjk.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/helpers.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/helpers.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/collision_plugin/narrow_phase/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/debug_plugin.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/debug_plugin.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/drawable.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/drawable.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/polygon_plugin.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/polygon_plugin.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/polygon_renderer/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/polygon_renderer/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/random_poly.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/random_poly.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img/inspector.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/inspector.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +41,24 @@
       <list>
         <option value="Rust File" />
       </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Baptiste SUZON &lt;baptiste_suzon@hotmail.com&gt;" />
+      </list>
+    </option>
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
     </option>
   </component>
   <component name="MacroExpansionManager">
@@ -84,6 +90,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/milestones/NarrowPhase/SRC" />
+    </key>
+  </component>
   <component name="RunManager" selected="Cargo.Run">
     <configuration name="Debug" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run --package rusted_physics --bin rusted_physics" />
@@ -156,7 +167,10 @@
       <updated>1671296531115</updated>
       <workItem from="1671296533194" duration="1613000" />
       <workItem from="1671440698043" duration="17697000" />
-      <workItem from="1671463480155" duration="2670000" />
+      <workItem from="1671463480155" duration="11108000" />
+      <workItem from="1671481300995" duration="13727000" />
+      <workItem from="1671502543905" duration="2032000" />
+      <workItem from="1671525911604" duration="11880000" />
     </task>
     <task id="LOCAL-00001" summary="GJK+EPA and line endings correction">
       <created>1671465366148</created>
@@ -165,15 +179,105 @@
       <option name="project" value="LOCAL" />
       <updated>1671465366148</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Optimized imports and removed useless functions">
+      <created>1671466284708</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1671466284708</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Removed unused epa.rs">
+      <created>1671471098100</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1671471098101</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Removed unused epa.rs">
+      <created>1671471110172</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1671471110172</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Various changes to drawlines">
+      <created>1671471122729</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1671471122729</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Removed useless components from NarrowPhaseQuery">
+      <created>1671472738290</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1671472738290</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Fix disabled BroadPhase not clearing collision_pairs">
+      <created>1671482247674</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1671482247674</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Removed intermediate hashset in narrow phase">
+      <created>1671482306538</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1671482306538</updated>
+    </task>
+    <task id="LOCAL-00009" summary="System stages can now be parallelized">
+      <created>1671482340427</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1671482340427</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Build Time optimization">
+      <created>1671482757557</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1671482757557</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Various optimizations + remove old line renderer">
+      <created>1671536310578</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1671536310578</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="GJK+EPA and line endings correction" />
-    <option name="LAST_COMMIT_MESSAGE" value="GJK+EPA and line endings correction" />
+    <MESSAGE value="Optimized imports and removed useless functions" />
+    <MESSAGE value="Removed unused epa.rs" />
+    <MESSAGE value="Various changes to drawlines" />
+    <MESSAGE value="Removed useless components from NarrowPhaseQuery" />
+    <MESSAGE value="Fix disabled BroadPhase not clearing collision_pairs" />
+    <MESSAGE value="Removed intermediate hashset in narrow phase" />
+    <MESSAGE value="System stages can now be parallelized" />
+    <MESSAGE value="Build Time optimization" />
+    <MESSAGE value="Various optimizations + remove old line renderer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Various optimizations + remove old line renderer" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

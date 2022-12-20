@@ -31,6 +31,8 @@ Jiggle every polygon: E
 
 - broad_phase_type: Allows to select the type of broad phase (Or disabled)
 - narrow_phase_type: Allows to select the type of narrow phase (Or disabled)
+- compute_info_collision: Enable computation of the collision infos such as Normal, Contact point, Penetration distance
+- Put non colliding objects to sleep: Non-colliding objects are put to sleep until they are moved. Currently bugged because they do not wake up neighbouring entities
 - draw_debug_broad_phase: If on, draw a yellow line between polygons which pass the broadphase check
 - draw_debug_narrow_phase: If on, draw a purple line between the polygons that collide
 - draw_debug_aabb: Draw the polygon's AABB
