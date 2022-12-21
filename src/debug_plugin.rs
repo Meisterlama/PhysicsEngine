@@ -1,15 +1,17 @@
+use std::cmp::{max, min};
 use bevy::diagnostic::{Diagnostics, FrameTimeDiagnosticsPlugin};
 use bevy::math::Vec3Swizzles;
 use bevy::prelude::*;
+use bevy_inspector_egui::egui::Event::Key;
 
-use crate::{MainCamera, random_poly};
+use crate::{DoNotDestroy, MainCamera, random_poly};
 use crate::polygon_component::PolygonComponent;
 use crate::random_poly::RandomPolyConfig;
 
 pub struct DebugPlugin;
 
 fn add_polygons(mut commands: Commands, keys: Res<Input<KeyCode>>,
-                query: Query<Entity, With<PolygonComponent>>,
+                query: Query<Entity, (With<PolygonComponent>, Without<DoNotDestroy>)>,
                 q_camera: Query<(&Transform, &Projection), With<MainCamera>>,
 )
 {
@@ -26,8 +28,8 @@ fn add_polygons(mut commands: Commands, keys: Res<Input<KeyCode>>,
     config.min_bounds += transform.translation.xy();
     config.max_bounds += transform.translation.xy();
 
-    // config.min_radius = (config.min_radius as f32 * proj.scale) as i32;
-    // config.max_radius = (config.max_radius as f32 * proj.scale) as i32;
+    config.min_radius = min((config.min_radius as f32 * scale) as i32, 1);
+    config.max_radius = max((config.max_radius as f32 * scale) as i32, 2);
 
     if keys.just_pressed(KeyCode::Z) || keys.pressed(KeyCode::X)
     {
@@ -43,6 +45,10 @@ fn add_polygons(mut commands: Commands, keys: Res<Input<KeyCode>>,
         {
             commands.entity(entity).despawn();
         }
+    }
+
+    if keys.just_pressed(KeyCode::C) {
+        commands.spawn(random_poly::create_square(100f32, 20f32, Vec2::ZERO, 0f32));
     }
 }
 

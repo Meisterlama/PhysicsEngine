@@ -29,14 +29,24 @@ mod aabb_update_system;
 mod polygon_renderer;
 mod line_renderer;
 
+#[derive(Component)]
+#[component(storage = "SparseSet")]
+pub struct DoNotDestroy;
+
 fn startup_add_polygons(mut commands: Commands)
 {
     let config = RandomPolyConfig::default();
 
-    for _ in 0..60000
+    fastrand::seed(0);
+    for _ in 0..30000
     {
         commands.spawn(random_poly::create_random_poly(&config));
     }
+
+    commands.spawn((random_poly::create_square(100f32, 1000f32, Vec2::new(-900f32, 0f32), 0f32), DoNotDestroy));
+    commands.spawn((random_poly::create_square(100f32, 1000f32, Vec2::new(900f32, 0f32), 0f32), DoNotDestroy));
+    commands.spawn((random_poly::create_square(1000f32, 100f32, Vec2::new(0f32, 500f32), 0f32), DoNotDestroy));
+    commands.spawn((random_poly::create_square(1000f32, 100f32, Vec2::new(0f32, -500f32), 0f32), DoNotDestroy));
 }
 
 fn add_camera(mut commands: Commands)

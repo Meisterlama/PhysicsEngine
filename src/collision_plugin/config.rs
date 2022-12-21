@@ -34,6 +34,8 @@ pub struct CollisionConfig {
     pub broad_time: f32,
     #[inspectable(read_only, label = "Narrow phase time", suffix = " ms")]
     pub narrow_time: f32,
+    #[inspectable(read_only, label = "Collision Response handling time", suffix = " ms")]
+    pub collision_response_time: f32,
     #[inspectable(read_only, label = "Total physic time", suffix = " ms")]
     pub total_physics_time: f32,
     #[inspectable(read_only, label = "Total frame time", suffix = " ms")]
@@ -59,6 +61,7 @@ impl Default for CollisionConfig
             entity_count: 0usize,
             broad_time: 0f32,
             narrow_time: 0f32,
+            collision_response_time: 0f32,
             total_physics_time: 0f32,
             total_frame_time: 0f32,
             collision_pairs_count: 0usize,

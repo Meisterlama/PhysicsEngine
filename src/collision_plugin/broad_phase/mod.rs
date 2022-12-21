@@ -25,7 +25,7 @@ impl Plugin for BroadPhasePlugin
     }
 }
 
-pub fn broad_phase(query: BroadPhaseQueryAwake,
+fn broad_phase(query: BroadPhaseQueryAwake,
                    mut broad_phase_data: ResMut<BroadPhaseData>,
                    config: ResMut<CollisionConfig>)
 {

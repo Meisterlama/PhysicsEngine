@@ -27,7 +27,7 @@ impl Plugin for NarrowPhasePlugin {
     }
 }
 
-pub fn narrow_phase(
+fn narrow_phase(
     query: NarrowPhaseQuery,
     mut narrow_phase_data: ResMut<NarrowPhaseData>,
     broad_phase_data: Res<BroadPhaseData>,

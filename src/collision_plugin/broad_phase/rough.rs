@@ -5,7 +5,7 @@ use super::BroadPhaseQueryAwake;
 use super::CollisionPair;
 
 //Naively add every pairs to check
-pub fn compute_collision_pairs(query: &BroadPhaseQueryAwake, out_collision_pair: &mut Vec<CollisionPair>)
+pub(crate) fn compute_collision_pairs(query: &BroadPhaseQueryAwake, out_collision_pair: &mut Vec<CollisionPair>)
 {
     let span = info_span!("broad_phase", name = "compute rough collisions").entered();
 

@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy::time::FixedTimestep;
 #[allow(unused_imports)]
 use bevy_inspector_egui::Inspectable;
 #[allow(unused_imports)]
@@ -14,6 +15,8 @@ mod config;
 mod draw_debug;
 mod debug_system;
 mod refresh_entities;
+mod collision_response;
+pub mod rigidbody;
 
 pub struct CollisionPlugin;
 
@@ -29,6 +32,8 @@ pub enum CollisionStage
 
 #[derive(Default, Component)]
 pub struct PhysicsAwake;
+
+const TIMESTEP: f64 = 1.0 /120.0;
 
 impl Plugin for CollisionPlugin {
     fn build(&self, app: &mut App) {
@@ -49,7 +54,8 @@ impl Plugin for CollisionPlugin {
         // CollisionPlugins
         app
             .add_plugin(broad_phase::BroadPhasePlugin)
-            .add_plugin(narrow_phase::NarrowPhasePlugin);
+            .add_plugin(narrow_phase::NarrowPhasePlugin)
+            .add_plugin(collision_response::CollisionResponsePlugin);
 
         // Debug Plugins
         app

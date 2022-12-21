@@ -8,7 +8,7 @@ use super::BroadPhaseQueryAwake;
 use super::CollisionPair;
 
 //Use Sweep & Prune to create a vector of CollisionPair
-pub fn compute_collision_pairs(query: &BroadPhaseQueryAwake, broad_phase_data: &mut BroadPhaseData)
+pub(crate) fn compute_collision_pairs(query: &BroadPhaseQueryAwake, broad_phase_data: &mut BroadPhaseData)
 {
     let _span = info_span!("broad_phase", name = "compute SAP collisions").entered();
 

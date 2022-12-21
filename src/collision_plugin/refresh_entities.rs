@@ -55,7 +55,7 @@ pub fn refresh_entities(
         broad_phase_data.sorted_entities.par_sort_by(|&e1, &e2| {
             let (t1, a1) = query.get(e1).unwrap();
             let (t2, a2) = query.get(e2).unwrap();
-            return (t1.translate(&a1.min).x).partial_cmp(&(t2.translate(&a2.min).x)).unwrap();
+            return (t1.translate(&a1.min).x).total_cmp(&(t2.translate(&a2.min).x));
         });
     }
 }

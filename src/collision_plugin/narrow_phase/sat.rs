@@ -4,7 +4,7 @@ use crate::collision_plugin::narrow_phase::helpers::{get_projection, overlaps};
 use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 
-pub fn get_sat_axes_to_test(polygon: &PolygonComponent, transform: &Transform2d) -> Vec<Vec2>
+fn get_sat_axes_to_test(polygon: &PolygonComponent, transform: &Transform2d) -> Vec<Vec2>
 {
     let mut axes = Vec::with_capacity(polygon.points.len());
 
@@ -16,7 +16,7 @@ pub fn get_sat_axes_to_test(polygon: &PolygonComponent, transform: &Transform2d)
     return axes;
 }
 
-pub fn check_collision(p1: &PolygonComponent, t1: &Transform2d,
+pub(crate) fn check_collision(p1: &PolygonComponent, t1: &Transform2d,
                        p2: &PolygonComponent, t2: &Transform2d) -> bool {
     let axes_p1 = get_sat_axes_to_test(p1, t1);
     for axis in axes_p1 {

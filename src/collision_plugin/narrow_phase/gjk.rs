@@ -5,7 +5,7 @@ use crate::collision_plugin::narrow_phase::helpers::{find_furthest_point, triple
 use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 
-fn get_support(p1: &PolygonComponent, t1: &Transform2d,
+pub fn get_support(p1: &PolygonComponent, t1: &Transform2d,
                p2: &PolygonComponent, t2: &Transform2d,
                direction: Vec2,
 ) -> Vec2 {
@@ -134,13 +134,13 @@ pub fn get_info_collisions(p1: &PolygonComponent, t1: &Transform2d,
     if !p2.is_point_inside(t2, &location)
     {
         location = location2;
-        min_normal *= -1f32;
+        // min_normal *= -1f32;
     }
 
     return CollisionInfo {
         collision_pair: None,
         location: location,
         normal: min_normal,
-        distance: min_dist,
+        distance: min_dist + TOLERANCE * 2f32,
     };
 }

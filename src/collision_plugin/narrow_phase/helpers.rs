@@ -8,12 +8,12 @@ pub fn get_projection(polygon: &PolygonComponent, transform: &Transform2d, axis:
 {
     let min = polygon.get_transformed_points(transform).iter()
         .map(move |&p| p.dot(axis))
-        .min_by(move |lhs, rhs| lhs.partial_cmp(rhs).unwrap())
+        .min_by(move |lhs, rhs| lhs.total_cmp(rhs))
         .unwrap();
 
     let max = polygon.get_transformed_points(transform).iter()
         .map(move |&p| p.dot(axis))
-        .max_by(move |lhs, rhs| lhs.partial_cmp(rhs).unwrap())
+        .max_by(move |lhs, rhs| lhs.total_cmp(rhs))
         .unwrap();
 
     return Vec2::new(min, max);
@@ -42,7 +42,7 @@ pub fn find_furthest_point(polygon: &PolygonComponent, transform: &Transform2d, 
         .max_by(move |lhs, rhs| {
             let lhs_dot = lhs.dot(direction);
             let rhs_dot = rhs.dot(direction);
-            return lhs_dot.partial_cmp(&rhs_dot).unwrap();
+            return lhs_dot.total_cmp(&rhs_dot);
         })
         .unwrap().clone();
 }

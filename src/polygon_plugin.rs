@@ -2,6 +2,7 @@ use std::f32::consts::PI;
 
 use bevy::input::mouse::MouseMotion;
 use bevy::prelude::*;
+use crate::collision_plugin::rigidbody::RigidBody2d;
 
 use crate::MainCamera;
 use crate::polygon_component::PolygonComponent;
@@ -10,15 +11,17 @@ use crate::transform2d::Transform2d;
 pub struct DrawPolygonPlugin;
 
 #[derive(Component)]
+#[component(storage = "SparseSet")]
 pub struct EntityToMove;
 
 #[derive(Component)]
+#[component(storage = "SparseSet")]
 pub struct EntityToRotate;
 
 fn select_polygons(
     mut commands: Commands,
     q_camera: Query<(&Camera, &GlobalTransform), With<MainCamera>>,
-    q_polygons: Query<(Entity, &PolygonComponent, &Transform2d, Option<&EntityToRotate>, Option<&EntityToMove>)>,
+    mut q_polygons: Query<(Entity, &PolygonComponent, &Transform2d, &mut RigidBody2d, Option<&EntityToRotate>, Option<&EntityToMove>)>,
     buttons: Res<Input<MouseButton>>,
     windows: Res<Windows>,
 )
@@ -34,7 +37,7 @@ fn select_polygons(
 
         let world_pos: Vec2 = world_pos.truncate();
 
-        for (entity, _polygon, transform, entity_to_rotate, entity_to_move) in q_polygons.iter() {
+        for (entity, _polygon, transform, mut rigidbody, entity_to_rotate, entity_to_move) in q_polygons.iter_mut() {
             // let is_point_inside = aabb.is_point_inside(transform.inv_translate(&world_pos));
             let is_point_inside = _polygon.is_point_inside(transform, &world_pos);
             if buttons.just_pressed(MouseButton::Left) && entity_to_move.is_none() && is_point_inside {
@@ -56,12 +59,13 @@ fn move_polygon(
     mut q_polygons: Query<(Entity, &mut Transform2d, Option<&EntityToRotate>, Option<&EntityToMove>), (Or<(With<EntityToRotate>, With<EntityToMove>)>, With<PolygonComponent>)>,
     q_camera: Query<&Projection, With<MainCamera>>,
     mut motion_evr: EventReader<MouseMotion>,
+    kb_buttons: Res<Input<KeyCode>>,
 )
 {
     let proj = q_camera.single();
     let Projection::Orthographic(ref proj) = *proj else { unimplemented!() };
 
-    let delta = {
+    let mut delta = {
         let mut tmp_delta = Vec2::new(0f32, 0f32);
         for ev in motion_evr.iter() {
             tmp_delta += ev.delta;
@@ -70,6 +74,15 @@ fn move_polygon(
         tmp_delta *= proj.scale;
         tmp_delta
     };
+
+    if kb_buttons.pressed(KeyCode::LShift)
+    {
+        if delta.x.abs() > delta.y.abs() {
+            delta.y = 0f32
+        } else {
+            delta.x = 0f32;
+        }
+    }
 
     for (_entity, mut transform, entity_to_rotate, entity_to_move) in q_polygons.iter_mut()
     {

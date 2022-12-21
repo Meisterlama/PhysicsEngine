@@ -1,6 +1,8 @@
+use std::default::Default;
 use bevy::prelude::*;
 
 use crate::aabb::AABB;
+use crate::collision_plugin::rigidbody::RigidBody2d;
 use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 
@@ -15,23 +17,23 @@ pub struct RandomPolyConfig {
     pub max_bounds: Vec2,
 }
 
-pub fn create_random_poly(config: &RandomPolyConfig) -> (PolygonComponent, Transform2d, AABB)
+pub fn create_random_poly(config: &RandomPolyConfig) -> (PolygonComponent, Transform2d, AABB, RigidBody2d)
 {
-    let radius = fastrand::i32(config.min_radius..config.max_radius);
-    let sides = fastrand::usize(config.min_points..config.max_points);
+    let radius = fastrand::i32(config.min_radius..=config.max_radius);
+    let sides = fastrand::usize(config.min_points..=config.max_points);
 
     let rand_x = {
         let min_x = config.min_bounds.x as i32;
         let max_x = config.max_bounds.x as i32;
-        fastrand::i32(min_x..max_x)
+        fastrand::i32(min_x..=max_x)
     };
     let rand_y = {
         let min_y = config.min_bounds.y as i32;
         let max_y = config.max_bounds.y as i32;
-        fastrand::i32(min_y..max_y)
+        fastrand::i32(min_y..=max_y)
     };
 
-    let rotation = fastrand::i32(config.min_rotation..config.max_rotation) as f32;
+    let rotation = fastrand::i32(config.min_rotation..=config.max_rotation) as f32;
 
     let mut points = Vec::with_capacity(sides.clone());
 
@@ -54,7 +56,32 @@ pub fn create_random_poly(config: &RandomPolyConfig) -> (PolygonComponent, Trans
     };
     let aabb = AABB::from(&polygon.get_rotated_points(&transform));
 
-    return (polygon, transform, aabb);
+    let rigidbody = RigidBody2d{
+        mass: (radius*radius) as f32,
+        is_kinematic: false,
+    };
+
+    return (polygon, transform, aabb, rigidbody);
+}
+
+pub fn create_square(length: f32, height: f32, position: Vec2, rotation: f32) -> (PolygonComponent, Transform2d, AABB, RigidBody2d) {
+    let mut points = Vec::with_capacity(4);
+
+    points.push(Vec2::new(-length, -height));
+    points.push(Vec2::new(-length, height));
+    points.push(Vec2::new(length, height));
+    points.push(Vec2::new(length, -height));
+
+    let polygon = PolygonComponent::new(points);
+    let transform = Transform2d{
+        position,
+        rotation,
+    };
+    let aabb = AABB::from(&polygon.get_rotated_points(&transform));
+    let mut rigidbody = RigidBody2d::default();
+    rigidbody.is_kinematic = true;
+
+    return (polygon, transform, aabb, rigidbody);
 }
 
 impl Default for RandomPolyConfig {
