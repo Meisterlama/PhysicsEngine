@@ -2,10 +2,12 @@ use std::f32::consts::PI;
 
 use bevy::input::mouse::MouseMotion;
 use bevy::prelude::*;
-use crate::collision_plugin::rigidbody::RigidBody2d;
 
+use crate::collision_plugin::aabb::AABB;
+use crate::collision_plugin::plugin::CollisionStage;
+use crate::collision_plugin::polygon_component::PolygonComponent;
+use crate::collision_plugin::rigidbody::RigidBody2d;
 use crate::MainCamera;
-use crate::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 
 pub struct DrawPolygonPlugin;
@@ -21,7 +23,7 @@ pub struct EntityToRotate;
 fn select_polygons(
     mut commands: Commands,
     q_camera: Query<(&Camera, &GlobalTransform), With<MainCamera>>,
-    mut q_polygons: Query<(Entity, &PolygonComponent, &Transform2d, &mut RigidBody2d, Option<&EntityToRotate>, Option<&EntityToMove>)>,
+    mut q_polygons: Query<(Entity, &PolygonComponent, &AABB, &Transform2d, &mut RigidBody2d, Option<&EntityToRotate>, Option<&EntityToMove>)>,
     buttons: Res<Input<MouseButton>>,
     windows: Res<Windows>,
 )
@@ -37,8 +39,8 @@ fn select_polygons(
 
         let world_pos: Vec2 = world_pos.truncate();
 
-        for (entity, _polygon, transform, mut rigidbody, entity_to_rotate, entity_to_move) in q_polygons.iter_mut() {
-            // let is_point_inside = aabb.is_point_inside(transform.inv_translate(&world_pos));
+        for (entity, _polygon, aabb, transform, rigidbody, entity_to_rotate, entity_to_move) in q_polygons.iter_mut() {
+            // let is_point_inside = aabb.is_point_inside(world_pos, transform);
             let is_point_inside = _polygon.is_point_inside(transform, &world_pos);
             if buttons.just_pressed(MouseButton::Left) && entity_to_move.is_none() && is_point_inside {
                 commands.entity(entity).insert(EntityToMove);
@@ -56,7 +58,7 @@ fn select_polygons(
 }
 
 fn move_polygon(
-    mut q_polygons: Query<(Entity, &mut Transform2d, Option<&EntityToRotate>, Option<&EntityToMove>), (Or<(With<EntityToRotate>, With<EntityToMove>)>, With<PolygonComponent>)>,
+    mut q_polygons: Query<(Entity, &mut RigidBody2d, &mut Transform2d, Option<&EntityToRotate>, Option<&EntityToMove>), (Or<(With<EntityToRotate>, With<EntityToMove>)>, With<PolygonComponent>)>,
     q_camera: Query<&Projection, With<MainCamera>>,
     mut motion_evr: EventReader<MouseMotion>,
     kb_buttons: Res<Input<KeyCode>>,
@@ -84,27 +86,36 @@ fn move_polygon(
         }
     }
 
-    for (_entity, mut transform, entity_to_rotate, entity_to_move) in q_polygons.iter_mut()
+    for (_entity, mut rigibody, mut transform, entity_to_rotate, entity_to_move) in q_polygons.iter_mut()
     {
         if entity_to_move.is_some()
         {
-            transform.position += delta;
+            if rigibody.is_kinematic {
+                transform.translation += delta;
+            } else {
+                rigibody.linear_speed += delta;
+            }
         }
         if entity_to_rotate.is_some()
         {
-            transform.rotation += delta.x.to_radians() % (PI * 2.0);
+            if rigibody.is_kinematic
+            {
+                transform.rotation += delta.x.to_radians() % (PI * 2.0);
+            } else {
+                rigibody.angular_speed += delta.x.to_radians() % (PI * 2.0);
+            }
         }
     }
 }
 
 fn auto_move_polygon(
-    mut q_polygons: Query<(&mut Transform2d), (Without<EntityToMove>, With<PolygonComponent>)>,
+    mut q_polygons: Query<&mut Transform2d, (Without<EntityToMove>, With<PolygonComponent>)>,
     kb_buttons: Res<Input<KeyCode>>,
 )
 {
     if kb_buttons.pressed(KeyCode::E) {
         q_polygons.par_for_each_mut(20, |mut transform| {
-            transform.position += Vec2::new(
+            transform.translation += Vec2::new(
                 fastrand::f32() - 0.5f32,
                 fastrand::f32() - 0.5f32,
             );
@@ -115,8 +126,9 @@ fn auto_move_polygon(
 impl Plugin for DrawPolygonPlugin {
     fn build(&self, app: &mut App) {
         app
-            .add_system(select_polygons)
-            .add_system(move_polygon)
-            .add_system(auto_move_polygon);
+            .add_stage_before(CollisionStage::SyncData, "Salut", SystemStage::parallel())
+            .add_system_to_stage("Salut", select_polygons)
+            .add_system_to_stage("Salut", move_polygon)
+            .add_system_to_stage("Salut", auto_move_polygon);
     }
 }

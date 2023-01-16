@@ -19,15 +19,24 @@ impl PolygonComponent {
         }
     }
     pub fn get_transformed_points(&self, transform: &Transform2d) -> Vec<Vec2> {
-        return self.points.iter().map(|p| transform.apply_to(p)).collect();
+        return self.points
+            .iter()
+            .map(|&p| transform.transform_point(p))
+            .collect();
     }
 
     pub fn get_translated_points(&self, transform: &Transform2d) -> Vec<Vec2> {
-        return self.points.iter().map(|p| transform.translate(p)).collect();
+        return self.points
+            .iter()
+            .map(|&p| p + transform.translation)
+            .collect();
     }
 
     pub fn get_rotated_points(&self, transform: &Transform2d) -> Vec<Vec2> {
-        return self.points.iter().map(|p| transform.rotate(p)).collect();
+        return self.points
+            .iter()
+            .map(|&p| transform.rotate(p))
+            .collect();
     }
 
     pub fn is_point_inside(&self, transform: &Transform2d, test_point: &Vec2) -> bool {

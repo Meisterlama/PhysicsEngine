@@ -12,7 +12,8 @@ pub struct AABB
 }
 
 impl AABB {
-    pub fn is_point_inside(&self, point: Vec2) -> bool {
+    pub fn is_point_inside(&self, point: Vec2, transform: &Transform2d) -> bool {
+        let point = point - transform.translation;
         return point.x <= self.max.x &&
             point.x >= self.min.x &&
             point.y <= self.max.y &&
@@ -45,15 +46,15 @@ impl AABB {
     }
 
     pub fn get_points(&self, t: &Transform2d) -> Vec<Vec3> {
-        let min = t.translate(&self.min);
-        let max = t.translate(&self.max);
+        let min = self.min + t.translation;
+        let max = self.max + t.translation;
         return vec!(
             Vec3::new(min.x, min.y, 0f32),
             Vec3::new(max.x, min.y, 0f32),
             Vec3::new(max.x, max.y, 0f32),
             Vec3::new(min.x, max.y, 0f32),
             Vec3::new(min.x, min.y, 0f32),
-        )
+        );
     }
 }
 
@@ -69,13 +70,12 @@ impl Default for AABB {
 
 pub fn check_collision(a1: &AABB, t1: &Transform2d, a2: &AABB, t2: &Transform2d) -> bool
 {
-    let a1_min = t1.translate(&a1.min);
-    let a1_max = t1.translate(&a1.max);
-    let a2_min = t2.translate(&a2.min);
-    let a2_max = t2.translate(&a2.max);
+    let a1_min = a1.min + t1.translation;
+    let a1_max = a1.max + t1.translation;
+    let a2_min = a2.min + t2.translation;
+    let a2_max = a2.max + t2.translation;
     return a1_min.x <= a2_max.x &&
         a1_max.x >= a2_min.x &&
         a1_min.y <= a2_max.y &&
         a1_max.y >= a2_min.y;
 }
-

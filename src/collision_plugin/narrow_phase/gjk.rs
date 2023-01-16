@@ -1,8 +1,8 @@
 use bevy::prelude::*;
 
-use crate::collision_plugin::collision_structs::CollisionInfo;
-use crate::collision_plugin::narrow_phase::helpers::{find_furthest_point, triple_product};
-use crate::polygon_component::PolygonComponent;
+use crate::collision_plugin::data_structs::CollisionInfo;
+use crate::collision_plugin::helpers::{find_furthest_point, find_n_furthest_point, triple_product};
+use crate::collision_plugin::polygon_component::PolygonComponent;
 use crate::transform2d::Transform2d;
 
 pub fn get_support(p1: &PolygonComponent, t1: &Transform2d,
@@ -16,7 +16,6 @@ pub fn get_support(p1: &PolygonComponent, t1: &Transform2d,
 pub fn check_collision(p1: &PolygonComponent, t1: &Transform2d,
                        p2: &PolygonComponent, t2: &Transform2d) -> (bool, [Vec2; 3])
 {
-
     let mut simplex = [Vec2::ZERO; 3];
     let mut index = 0;
 
@@ -127,20 +126,41 @@ pub fn get_info_collisions(p1: &PolygonComponent, t1: &Transform2d,
         }
     }
 
-    let location1 = find_furthest_point(p1, t1, min_normal);
-    let location2 = find_furthest_point(p2, t2, -min_normal);
+    const N_POINTS : usize = 2;
 
-    let mut location = location1;
-    if !p2.is_point_inside(t2, &location)
-    {
-        location = location2;
-        // min_normal *= -1f32;
-    }
+    let mut location1 = find_n_furthest_point(N_POINTS, p1, t1, min_normal);
+    let mut location2 = find_n_furthest_point(N_POINTS, p2, t2, -min_normal);
+
+    let mut location = Vec::new();
+    location.append(&mut location1);
+    location.append(&mut location2);
+    location.sort_by(move |lhs, rhs| {
+        let lhs_dot = lhs.dot(min_normal);
+        let rhs_dot = rhs.dot(min_normal);
+        return rhs_dot.total_cmp(&lhs_dot);
+    });
+    // location.dedup();
+
+    location = location[0..N_POINTS].to_vec();
+
+
+    // let location = vec!(
+    //     find_furthest_point(p1, t1, min_normal),
+    //     find_furthest_point(p2, t2, min_normal),
+    // );
+
+    assert!(location.len() <= N_POINTS);
+    // let mut location = location1;
+    // if !p2.is_point_inside(t2, &location[0])
+    // {
+    //     location = location2;
+    //     // min_normal *= -1f32;
+    // }
 
     return CollisionInfo {
         collision_pair: None,
         location: location,
-        normal: min_normal,
+        normal: -min_normal,
         distance: min_dist + TOLERANCE * 2f32,
     };
 }
